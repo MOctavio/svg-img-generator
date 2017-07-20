@@ -1,0 +1,19 @@
+{
+  "name": "pptGenerator",
+  "version": "0.9.0",
+  "description": "Simple chart and table transformation to png and ppt export",
+  "main": "server.js",
+  "author": "Mario Octavio Jimenez",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "d3": "3.5.17",
+    "express": "^4.15.3",
+    "fast-csv": "^2.4.0",
+    "jsdom": "^11.1.0",
+    "svg-to-image": "^1.1.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
