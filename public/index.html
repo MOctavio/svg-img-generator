@@ -9,9 +9,30 @@
 </head>
 
 <body>
-    <div id="svg"></div>
+    <div id="svg">Loading...</div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
-<script src="./chart.js"></script>
+<script>
+    fetch("/data")
+        .then((resp) => resp.json()) // Transform the data into json
+        .then((data) => {
+            return fetch("/svg", {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(function (response) {
+                    return response.text();
+                })
+                .then((svg) => {
+                    // console.log(svg);
+                    document.getElementById("svg").innerHTML = svg;
+                });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+</script>
 
 </html>
