@@ -5,7 +5,6 @@
     <title>Charts to PPT</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -13,26 +12,42 @@
 </body>
 <script>
     fetch("/data")
-        .then((resp) => resp.json()) // Transform the data into json
+        .then((response) => response.json())
         .then((data) => {
-            return fetch("/svg", {
+            const svgProm = fetch("/svg", {
                     method: "POST",
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
-                }).then(function (response) {
-                    return response.text();
                 })
+                .then((response) => response.text())
                 .then((svg) => {
-                    // console.log(svg);
                     document.getElementById("svg").innerHTML = svg;
+                    return "SVG fetch completed.";
                 });
+
+            const svgImgProm = fetch("/svg-to-image", {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.text())
+                .then((imgPath) => {
+                    let img = document.createElement('img');
+                    img.src = imgPath;
+                    document.body.appendChild(img);
+                    return "Image fetch completed.";
+                });
+            return Promise
+                .all([svgProm, svgImgProm])
+                .then(values => console.log);
         })
-        .catch((error) => {
-            console.log(error);
-        });
+        .catch(e => console.error);
 </script>
 
 </html>

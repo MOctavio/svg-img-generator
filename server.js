@@ -4,6 +4,7 @@ const path = require('path');
 const app = express();
 
 const svgGenerator = require('./svg-generator');
+const svgToImage = require('./svg-to-image');
 const data = require('./data.json');
 
 app.set('port', 3000);
@@ -17,19 +18,35 @@ app.all('*', (req, res, next) => {
     next();
 });
 
-app.get('/data', function (req, res) { 
-        res.send(data);
+app.get('/data', function (req, res) {
+    res.send(data);
 })
 
 app.post('/svg', function (req, res) {
-    svgGenerator(req.body.data, req.body.config).then((data) => {
-        res.send(data);
-    }).catch((err) => {
-        console.log(err);
-        res.send(err);
-    });
-
+    svgGenerator(req.body.data, req.body.config)
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(err);
+        });
 });
+
+app.post('/svg-to-image', function (req, res) {
+    svgGenerator(req.body.data, req.body.config)
+        .then((data) => {
+            svgToImage(data)
+                .then((img) => {
+                    res.send(img);
+                });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(err);
+        });
+});
+
 
 const server = app.listen(app.get('port'), function () {
     const port = server.address().port;

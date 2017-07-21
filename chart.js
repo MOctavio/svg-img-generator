@@ -113,36 +113,47 @@ module.exports = (data, config, svg) => {
             return age;
         });
 
-    // // Allow the arrow keys to change the displayed year.
-    // window.focus();
-    // d3.select(window).on("keydown", () {
-    // =>     switch (d3.event.keyCode) {
-    //         case 37:
-    //             year = Math.max(year0, year - 10);
-    //             break;
-    //         case 39:
-    //             year = Math.min(year1, year + 10);
-    //             break;
-    //     }
-    //     update();
-    // });
-
-    // update() { =>     //     if (!(year in data)) return;
-    //     title.text(year);
-
-    //     birthyears.transition()
-    //         .duration(750)
-    //         .attr("transform", "translate(" + (x(year1) - x(year)) + ",0)");
-
-    //     birthyear.selectAll("rect")
-    //         .data((birthyear) => {
-    //             return data[year][birthyear] || [0, 0];
-    //         })
-    //         .transition()
-    //         .duration(750)
-    //         .attr("y", y)
-    //         .attr("height", (value) => {
-    //             return height - y(value);
-    //         });
-    // }
+    // Inline styles to avoid usage of CSS
+    svg.selectAll("svg")
+        .style({
+            'font': '10px'
+        });
+    svg.selectAll(".y.axis path")
+        .style({
+            'display': 'none'
+        });
+    svg.selectAll(".y.axis line")
+        .style({
+            'stroke': '#fff',
+            'stroke-opacity': '.2',
+            'shape-rendering': 'crispEdges'
+        });
+    svg.selectAll(".y.axis .zero line")
+        .style({
+            'stroke': '#00',
+            'stroke-opacity': '1'
+        });
+    svg.selectAll(".title")
+        .style({
+            'font': '78px',
+            'fill': '#666'
+        });
+    svg.selectAll(".birthyear")
+        .style({
+            'text-anchor': 'middle',
+            'fill': '#fff'
+        });
+    svg.selectAll(".age")
+        .style({
+            'text-anchor': 'middle'
+        });
+    svg.selectAll("rect")
+        .style({
+            'fill-opacity': '.6',
+            'fill': '#e377c2'
+        });
+    svg.selectAll("rect:first-child")
+        .style({
+            'fill': '#1f77b4'
+        });
 }
